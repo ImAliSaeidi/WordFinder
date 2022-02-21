@@ -1,7 +1,7 @@
 namespace WordFinder.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WordsController : ControllerBase
     {
         private readonly IWordService wordService;
