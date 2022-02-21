@@ -1,6 +1,4 @@
-﻿using WordFinder.Core.IRepositories.Words;
-
-namespace WordFinder.Core.Services.Words
+﻿namespace WordFinder.Core.Services.Words
 {
     public class WordService : IWordService
     {
