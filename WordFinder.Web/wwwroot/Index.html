@@ -1,0 +1,98 @@
+﻿<!doctype html>
+<html dir="rtl" lang="fa" style="font-family:Vazir">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <title>کلمه یاب</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                کلمه یاب فارسی
+            </a>
+        </div>
+    </nav>
+    <div class="mb-5 ms-5 mt-5 me-5">
+        <div class="col-3">
+            <label class="form-label h4">حروف مورد نظر را وارد کنید</label>
+            <input type="text" class="form-control" id="Letters">
+            <label class="form-label text-muted h5">حروف را با <span class="text-danger">-</span> جدا سازی کنید</label>
+        </div>
+        <hr />
+        <div class="col-12">
+            <button type="submit" onclick="FindWords(3)" class="btn btn-primary mb-3">یافتن کلمات 3 حرفی</button>
+            <button type="submit" onclick="FindWords(4)" class="btn btn-primary mb-3">یافتن کلمات 4 حرفی</button>
+            <button type="submit" onclick="FindWords(5)" class="btn btn-primary mb-3">یافتن کلمات 5 حرفی</button>
+            <button type="submit" onclick="FindWords(6)" class="btn btn-primary mb-3">یافتن کلمات 6 حرفی</button>
+            <button type="submit" onclick="FindWords(7)" class="btn btn-primary mb-3">یافتن کلمات 7 حرفی</button>
+            <button type="submit" onclick="FindWords(8)" class="btn btn-primary mb-3">یافتن کلمات 8 حرفی</button>
+        </div>
+        <hr />
+        <div class="col-xs-1">
+            <table class="table table-striped">
+                <thead>
+                    <tr id="WordTitle" class="text-center">
+                    </tr>
+                </thead>
+                <tbody id="Words">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+
+        function GetLetters() {
+            var letters = document.getElementById("Letters").value;
+            var data = JSON.stringify({
+                "letters": letters
+            });
+            return data;
+        }
+
+        function FindWords(letterCount) {
+            var data = GetLetters();
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    FillData(letterCount, JSON.parse(this.response));
+                }
+            });
+
+            xhr.open("POST", "https://localhost:7057/Words/Find" + letterCount+"LetterWords");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(data);
+        }
+
+        function FillData(title, data) {
+            if (data.words.length != 0) {
+                document.getElementById("WordTitle").innerHTML = ` <td><h4>کلمات ${title} حرفی | ${data.words.length} کلمه</h4></td>`;
+                var words = ``;
+                for (var i = 0; i < data.words.length; i++) {
+                    words += `<tr class="text-center">
+                        <td><h5>${data.words[i]}</h5></td>
+                    </tr>`
+                }
+                document.getElementById("Words").innerHTML = words;
+            }
+            else {
+                document.getElementById("WordTitle").innerHTML = ` <td><h4>جستجوی شما نتیجه ای در بر نداشت</h4></td>`;
+                document.getElementById("Words").innerHTML = ``;
+            }
+        }
+
+    </script>
+</body>
+</html>

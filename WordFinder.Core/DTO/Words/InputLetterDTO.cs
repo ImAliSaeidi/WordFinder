@@ -2,7 +2,7 @@
 {
     public class InputLetterDTO
     {
-        public List<string> Letters { get; set; }
+        public string Letters { get; set; }
 
     }
 }

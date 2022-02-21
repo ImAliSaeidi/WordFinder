@@ -20,7 +20,8 @@
                 }
             }
             finalSource = finalSource.Where(x => x.Length == 3).ToList();
-            result.Words = FindWords3(dto, finalSource);
+            var letters = dto.Letters.Split("-").ToList();
+            result.Words = FindWords3(letters, finalSource);
             return result;
         }
 
@@ -42,7 +43,8 @@
                 }
             }
             finalSource = finalSource.Where(x => x.Length == 4).ToList();
-            result.Words = FindWords4(dto, finalSource);
+            var letters = dto.Letters.Split("-").ToList();
+            result.Words = FindWords4(letters, finalSource);
             return result;
         }
 
@@ -64,7 +66,8 @@
                 }
             }
             finalSource = finalSource.Where(x => x.Length == 5).ToList();
-            result.Words = FindWords5(dto, finalSource);
+            var letters = dto.Letters.Split("-").ToList();
+            result.Words = FindWords5(letters, finalSource);
             return result;
         }
 
@@ -86,7 +89,8 @@
                 }
             }
             finalSource = finalSource.Where(x => x.Length == 6).ToList();
-            result.Words = FindWords6(dto, finalSource);
+            var letters = dto.Letters.Split("-").ToList();
+            result.Words = FindWords6(letters, finalSource);
             return result;
         }
 
@@ -108,7 +112,8 @@
                 }
             }
             finalSource = finalSource.Where(x => x.Length == 7).ToList();
-            result.Words = FindWords7(dto, finalSource);
+            var letters = dto.Letters.Split("-").ToList();
+            result.Words = FindWords7(letters, finalSource);
             return result;
         }
 
@@ -130,36 +135,31 @@
                 }
             }
             finalSource = finalSource.Where(x => x.Length == 8).ToList();
-            result.Words = FindWords8(dto, finalSource);
+            var letters = dto.Letters.Split("-").ToList();
+            result.Words = FindWords8(letters, finalSource);
             return result;
         }
 
-        private static List<string>? FindWords3(InputLetterDTO dto, List<string> source)
+        private static List<string>? FindWords3(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
             {
                 var words = new List<string>();
 
-                for (int i = 0; i < dto.Letters.Count; i++)
+                for (int i = 0; i < letters.Count; i++)
                 {
-                    for (int j = 0; j < dto.Letters.Count; j++)
+                    for (int j = 0; j < letters.Count; j++)
                     {
-                        for (int k = 0; k < dto.Letters.Count; k++)
+                        for (int k = 0; k < letters.Count; k++)
                         {
-                            words.Add(dto.Letters[i] + dto.Letters[j] + dto.Letters[k]);
+                            words.Add(letters[i] + letters[j] + letters[k]);
                         }
                     }
                 }
                 words = words.Distinct().ToList();
 
-                foreach (var word in words)
-                {
-                    if (source.Contains(word))
-                    {
-                        result.Add(word);
-                    }
-                }
+                result = source.Where(x => words.Contains(x)).Distinct().ToList();
             }
             catch
             {
@@ -170,35 +170,29 @@
             return result;
         }
 
-        private static List<string>? FindWords4(InputLetterDTO dto, List<string> source)
+        private static List<string>? FindWords4(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
             {
                 var words = new List<string>();
 
-                for (int i = 0; i < dto.Letters.Count; i++)
+                for (int i = 0; i < letters.Count; i++)
                 {
-                    for (int j = 0; j < dto.Letters.Count; j++)
+                    for (int j = 0; j < letters.Count; j++)
                     {
-                        for (int k = 0; k < dto.Letters.Count; k++)
+                        for (int k = 0; k < letters.Count; k++)
                         {
-                            for (int l = 0; l < dto.Letters.Count; l++)
+                            for (int l = 0; l < letters.Count; l++)
                             {
-                                words.Add(dto.Letters[i] + dto.Letters[j] + dto.Letters[k] + dto.Letters[l]);
+                                words.Add(letters[i] + letters[j] + letters[k] + letters[l]);
                             }
                         }
                     }
                 }
                 words = words.Distinct().ToList();
 
-                foreach (var word in words)
-                {
-                    if (source.Contains(word))
-                    {
-                        result.Add(word);
-                    }
-                }
+                result = source.Where(x => words.Contains(x)).Distinct().ToList();
 
             }
             catch
@@ -208,24 +202,24 @@
             return result;
         }
 
-        private static List<string>? FindWords5(InputLetterDTO dto, List<string> source)
+        private static List<string>? FindWords5(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
             {
                 var words = new List<string>();
 
-                for (int i = 0; i < dto.Letters.Count; i++)
+                for (int i = 0; i < letters.Count; i++)
                 {
-                    for (int j = 0; j < dto.Letters.Count; j++)
+                    for (int j = 0; j < letters.Count; j++)
                     {
-                        for (int k = 0; k < dto.Letters.Count; k++)
+                        for (int k = 0; k < letters.Count; k++)
                         {
-                            for (int l = 0; l < dto.Letters.Count; l++)
+                            for (int l = 0; l < letters.Count; l++)
                             {
-                                for (int m = 0; m < dto.Letters.Count; m++)
+                                for (int m = 0; m < letters.Count; m++)
                                 {
-                                    words.Add(dto.Letters[i] + dto.Letters[j] + dto.Letters[k] + dto.Letters[l] + dto.Letters[m]);
+                                    words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m]);
                                 }
                             }
                         }
@@ -233,13 +227,7 @@
                 }
                 words = words.Distinct().ToList();
 
-                foreach (var word in words)
-                {
-                    if (source.Contains(word))
-                    {
-                        result.Add(word);
-                    }
-                }
+                result = source.Where(x => words.Contains(x)).Distinct().ToList();
             }
             catch
             {
@@ -249,26 +237,26 @@
             return result;
         }
 
-        private static List<string>? FindWords6(InputLetterDTO dto, List<string> source)
+        private static List<string>? FindWords6(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
             {
                 var words = new List<string>();
 
-                for (int i = 0; i < dto.Letters.Count; i++)
+                for (int i = 0; i < letters.Count; i++)
                 {
-                    for (int j = 0; j < dto.Letters.Count; j++)
+                    for (int j = 0; j < letters.Count; j++)
                     {
-                        for (int k = 0; k < dto.Letters.Count; k++)
+                        for (int k = 0; k < letters.Count; k++)
                         {
-                            for (int l = 0; l < dto.Letters.Count; l++)
+                            for (int l = 0; l < letters.Count; l++)
                             {
-                                for (int m = 0; m < dto.Letters.Count; m++)
+                                for (int m = 0; m < letters.Count; m++)
                                 {
-                                    for (int n = 0; n < dto.Letters.Count; n++)
+                                    for (int n = 0; n < letters.Count; n++)
                                     {
-                                        words.Add(dto.Letters[i] + dto.Letters[j] + dto.Letters[k] + dto.Letters[l] + dto.Letters[m] + dto.Letters[n]);
+                                        words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m] + letters[n]);
                                     }
                                 }
                             }
@@ -277,13 +265,7 @@
                 }
                 words = words.Distinct().ToList();
 
-                foreach (var word in words)
-                {
-                    if (source.Contains(word))
-                    {
-                        result.Add(word);
-                    }
-                }
+                result = source.Where(x => words.Contains(x)).Distinct().ToList();
 
             }
             catch
@@ -293,28 +275,28 @@
             return result;
         }
 
-        private static List<string>? FindWords7(InputLetterDTO dto, List<string> source)
+        private static List<string>? FindWords7(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
             {
                 var words = new List<string>();
 
-                for (int i = 0; i < dto.Letters.Count; i++)
+                for (int i = 0; i < letters.Count; i++)
                 {
-                    for (int j = 0; j < dto.Letters.Count; j++)
+                    for (int j = 0; j < letters.Count; j++)
                     {
-                        for (int k = 0; k < dto.Letters.Count; k++)
+                        for (int k = 0; k < letters.Count; k++)
                         {
-                            for (int l = 0; l < dto.Letters.Count; l++)
+                            for (int l = 0; l < letters.Count; l++)
                             {
-                                for (int m = 0; m < dto.Letters.Count; m++)
+                                for (int m = 0; m < letters.Count; m++)
                                 {
-                                    for (int n = 0; n < dto.Letters.Count; n++)
+                                    for (int n = 0; n < letters.Count; n++)
                                     {
-                                        for (int o = 0; o < dto.Letters.Count; o++)
+                                        for (int o = 0; o < letters.Count; o++)
                                         {
-                                            words.Add(dto.Letters[i] + dto.Letters[j] + dto.Letters[k] + dto.Letters[l] + dto.Letters[m] + dto.Letters[n] + dto.Letters[o]);
+                                            words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m] + letters[n] + letters[o]);
                                         }
                                     }
                                 }
@@ -324,13 +306,7 @@
                 }
                 words = words.Distinct().ToList();
 
-                foreach (var word in words)
-                {
-                    if (source.Contains(word))
-                    {
-                        result.Add(word);
-                    }
-                }
+                result = source.Where(x => words.Contains(x)).Distinct().ToList();
 
             }
             catch
@@ -340,30 +316,30 @@
             return result;
         }
 
-        private static List<string>? FindWords8(InputLetterDTO dto, List<string> source)
+        private static List<string>? FindWords8(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
             {
                 var words = new List<string>();
 
-                for (int i = 0; i < dto.Letters.Count; i++)
+                for (int i = 0; i < letters.Count; i++)
                 {
-                    for (int j = 0; j < dto.Letters.Count; j++)
+                    for (int j = 0; j < letters.Count; j++)
                     {
-                        for (int k = 0; k < dto.Letters.Count; k++)
+                        for (int k = 0; k < letters.Count; k++)
                         {
-                            for (int l = 0; l < dto.Letters.Count; l++)
+                            for (int l = 0; l < letters.Count; l++)
                             {
-                                for (int m = 0; m < dto.Letters.Count; m++)
+                                for (int m = 0; m < letters.Count; m++)
                                 {
-                                    for (int n = 0; n < dto.Letters.Count; n++)
+                                    for (int n = 0; n < letters.Count; n++)
                                     {
-                                        for (int o = 0; o < dto.Letters.Count; o++)
+                                        for (int o = 0; o < letters.Count; o++)
                                         {
-                                            for (int p = 0; p < dto.Letters.Count; p++)
+                                            for (int p = 0; p < letters.Count; p++)
                                             {
-                                                words.Add(dto.Letters[i] + dto.Letters[j] + dto.Letters[k] + dto.Letters[l] + dto.Letters[m] + dto.Letters[n] + dto.Letters[o] + dto.Letters[p]);
+                                                words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m] + letters[n] + letters[o] + letters[p]);
                                             }
                                         }
                                     }
@@ -374,13 +350,7 @@
                 }
                 words = words.Distinct().ToList();
 
-                foreach (var word in words)
-                {
-                    if (source.Contains(word))
-                    {
-                        result.Add(word);
-                    }
-                }
+                result = source.Where(x => words.Contains(x)).Distinct().ToList();
             }
             catch
             {
