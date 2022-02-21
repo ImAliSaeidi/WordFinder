@@ -2,16 +2,18 @@
 {
     public class WordService : IWordService
     {
-        public OutputWordDTO Find3LetterWords(InputLetterDTO dto)
+
+        public OutputWordDTO FindWords(InputLetterDTO dto, int letterCount)
         {
             var result = new OutputWordDTO();
 
             var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split('\n').ToList();
+            var source = File.ReadAllText(path).Split("\r\n").ToList();
             var finalSource = new List<string>();
+            var letters = dto.Letters.Split("-").ToList();
             foreach (var word in source)
             {
-                foreach (var letter in dto.Letters)
+                foreach (var letter in letters)
                 {
                     if (word.Contains(letter))
                     {
@@ -19,128 +21,35 @@
                     }
                 }
             }
-            finalSource = finalSource.Where(x => x.Length == 3).ToList();
-            var letters = dto.Letters.Split("-").ToList();
-            result.Words = FindWords3(letters, finalSource);
-            return result;
-        }
-
-        public OutputWordDTO Find4LetterWords(InputLetterDTO dto)
-        {
-            var result = new OutputWordDTO();
-
-            var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split('\n').ToList();
-            var finalSource = new List<string>();
-            foreach (var word in source)
+            finalSource = finalSource.Where(x => x.Length == letterCount).Distinct().ToList();
+            if (nameof(Find3LetterWords).Contains(letterCount.ToString()))
             {
-                foreach (var letter in dto.Letters)
-                {
-                    if (word.Contains(letter))
-                    {
-                        finalSource.Add(word);
-                    }
-                }
+                result.Words = Find3LetterWords(letters, finalSource);
             }
-            finalSource = finalSource.Where(x => x.Length == 4).ToList();
-            var letters = dto.Letters.Split("-").ToList();
-            result.Words = FindWords4(letters, finalSource);
-            return result;
-        }
-
-        public OutputWordDTO Find5LetterWords(InputLetterDTO dto)
-        {
-            var result = new OutputWordDTO();
-
-            var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split('\n').ToList();
-            var finalSource = new List<string>();
-            foreach (var word in source)
+            if (nameof(Find4LetterWords).Contains(letterCount.ToString()))
             {
-                foreach (var letter in dto.Letters)
-                {
-                    if (word.Contains(letter))
-                    {
-                        finalSource.Add(word);
-                    }
-                }
+                result.Words = Find4LetterWords(letters, finalSource);
             }
-            finalSource = finalSource.Where(x => x.Length == 5).ToList();
-            var letters = dto.Letters.Split("-").ToList();
-            result.Words = FindWords5(letters, finalSource);
-            return result;
-        }
-
-        public OutputWordDTO Find6LetterWords(InputLetterDTO dto)
-        {
-            var result = new OutputWordDTO();
-
-            var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split('\n').ToList();
-            var finalSource = new List<string>();
-            foreach (var word in source)
+            if (nameof(Find5LetterWords).Contains(letterCount.ToString()))
             {
-                foreach (var letter in dto.Letters)
-                {
-                    if (word.Contains(letter))
-                    {
-                        finalSource.Add(word);
-                    }
-                }
+                result.Words = Find5LetterWords(letters, finalSource);
             }
-            finalSource = finalSource.Where(x => x.Length == 6).ToList();
-            var letters = dto.Letters.Split("-").ToList();
-            result.Words = FindWords6(letters, finalSource);
-            return result;
-        }
-
-        public OutputWordDTO Find7LetterWords(InputLetterDTO dto)
-        {
-            var result = new OutputWordDTO();
-
-            var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split('\n').ToList();
-            var finalSource = new List<string>();
-            foreach (var word in source)
+            if (nameof(Find6LetterWords).Contains(letterCount.ToString()))
             {
-                foreach (var letter in dto.Letters)
-                {
-                    if (word.Contains(letter))
-                    {
-                        finalSource.Add(word);
-                    }
-                }
+                result.Words = Find6LetterWords(letters, finalSource);
             }
-            finalSource = finalSource.Where(x => x.Length == 7).ToList();
-            var letters = dto.Letters.Split("-").ToList();
-            result.Words = FindWords7(letters, finalSource);
-            return result;
-        }
-
-        public OutputWordDTO Find8LetterWords(InputLetterDTO dto)
-        {
-            var result = new OutputWordDTO();
-
-            var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split('\n').ToList();
-            var finalSource = new List<string>();
-            foreach (var word in source)
+            if (nameof(Find7LetterWords).Contains(letterCount.ToString()))
             {
-                foreach (var letter in dto.Letters)
-                {
-                    if (word.Contains(letter))
-                    {
-                        finalSource.Add(word);
-                    }
-                }
+                result.Words = Find7LetterWords(letters, finalSource);
             }
-            finalSource = finalSource.Where(x => x.Length == 8).ToList();
-            var letters = dto.Letters.Split("-").ToList();
-            result.Words = FindWords8(letters, finalSource);
+            if (nameof(Find8LetterWords).Contains(letterCount.ToString()))
+            {
+                result.Words = Find8LetterWords(letters, finalSource);
+            }
             return result;
         }
 
-        private static List<string>? FindWords3(List<string> letters, List<string> source)
+        private static List<string>? Find3LetterWords(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
@@ -170,7 +79,7 @@
             return result;
         }
 
-        private static List<string>? FindWords4(List<string> letters, List<string> source)
+        private static List<string>? Find4LetterWords(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
@@ -202,7 +111,7 @@
             return result;
         }
 
-        private static List<string>? FindWords5(List<string> letters, List<string> source)
+        private static List<string>? Find5LetterWords(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
@@ -237,7 +146,7 @@
             return result;
         }
 
-        private static List<string>? FindWords6(List<string> letters, List<string> source)
+        private static List<string>? Find6LetterWords(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
@@ -275,7 +184,7 @@
             return result;
         }
 
-        private static List<string>? FindWords7(List<string> letters, List<string> source)
+        private static List<string>? Find7LetterWords(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
@@ -316,7 +225,7 @@
             return result;
         }
 
-        private static List<string>? FindWords8(List<string> letters, List<string> source)
+        private static List<string>? Find8LetterWords(List<string> letters, List<string> source)
         {
             var result = new List<string>();
             try
@@ -359,6 +268,7 @@
 
             return result;
         }
+
 
     }
 }

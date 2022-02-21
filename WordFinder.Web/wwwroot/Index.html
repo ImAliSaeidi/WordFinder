@@ -41,7 +41,6 @@
                     </tr>
                 </thead>
                 <tbody id="Words">
-                    
                 </tbody>
             </table>
         </div>
@@ -52,16 +51,12 @@
     <script src="js/bootstrap.min.js"></script>
     <script>
 
-        function GetLetters() {
+        function FindWords(letterCount) {
             var letters = document.getElementById("Letters").value;
             var data = JSON.stringify({
-                "letters": letters
+                "letters": letters,
+                "letterCount": letterCount
             });
-            return data;
-        }
-
-        function FindWords(letterCount) {
-            var data = GetLetters();
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
@@ -71,7 +66,7 @@
                 }
             });
 
-            xhr.open("POST", "https://localhost:7057/Words/Find" + letterCount+"LetterWords");
+            xhr.open("POST", "https://localhost:7057/Words/");
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(data);
         }
@@ -82,8 +77,8 @@
                 var words = ``;
                 for (var i = 0; i < data.words.length; i++) {
                     words += `<tr class="text-center">
-                        <td><h5>${data.words[i]}</h5></td>
-                    </tr>`
+                                <td><h5>${data.words[i]}</h5></td>
+                            </tr>`
                 }
                 document.getElementById("Words").innerHTML = words;
             }

@@ -3,6 +3,7 @@
     public class InputLetterDTO
     {
         public string Letters { get; set; }
+        public int LetterCount { get; set; }
 
     }
 }
