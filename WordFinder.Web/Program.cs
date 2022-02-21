@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using WordFinder.Core.IRepositories.Words;
+using WordFinder.Core.Repositories.Words;
+using WordFinder.Data.Context;
+using WordFinder.Data.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IWordService, WordService>();
+builder.Services.AddScoped<IWordRepository, WordRepository>();
+builder.Configuration.GetSection("ConnectionStringConfig").Bind(new ConnectionStringConfig());
+builder.Services.AddDbContext<WordFinderContext>(option => { option.UseSqlServer(ConnectionStringConfig.ConnectionString); });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
