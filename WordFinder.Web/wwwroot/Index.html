@@ -66,19 +66,26 @@
                 }
             });
 
-            xhr.open("POST", "https://localhost:7057/Words/");
+            xhr.open("POST", "https://localhost:7057/api/Words/");
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(data);
         }
 
         function FillData(title, data) {
             if (data.words.length != 0) {
-                document.getElementById("WordTitle").innerHTML = ` <td><h4>کلمات ${title} حرفی | ${data.words.length} کلمه</h4></td>`;
+                document.getElementById("WordTitle").innerHTML = `
+									<td>
+										<h4>کلمات ${title} حرفی | ${data.words.length} کلمه</h4>
+										<h6 class="text-muted">پس از حذف برای مشاهده مجدد کلمات حذف شده،روی یافتن کلمات ${title} حرفی کلیک کنید</h6>
+									</td>`;
                 var words = ``;
                 for (var i = 0; i < data.words.length; i++) {
-                    words += `<tr class="text-center">
-                                <td><h5>${data.words[i]}</h5></td>
-                            </tr>`
+                    words += `<tr id="${i}" class="text-center">
+                                <td>
+									<h5>${data.words[i]}</h5>
+									<button type="submit" onclick="DeleteWord(${i})" class="btn btn-sm btn-danger mb-3">حذف موقت</button>
+									</td>
+                                 </tr>`
                 }
                 document.getElementById("Words").innerHTML = words;
             }
@@ -86,6 +93,10 @@
                 document.getElementById("WordTitle").innerHTML = ` <td><h4>جستجوی شما نتیجه ای در بر نداشت</h4></td>`;
                 document.getElementById("Words").innerHTML = ``;
             }
+        }
+
+        function DeleteWord(id) {
+            document.getElementById(id).innerHTML = ``;
         }
 
     </script>
