@@ -2,6 +2,6 @@
 {
     public interface IWordService
     {
-        OutputWordDTO FindWords(InputLetterDTO dto, int letterCount);
+        OutputWordDTO FindWords(InputLetterDTO dto);
     }
 }

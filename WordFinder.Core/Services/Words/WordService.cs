@@ -2,13 +2,12 @@
 {
     public class WordService : IWordService
     {
-
-        public OutputWordDTO FindWords(InputLetterDTO dto, int letterCount)
+        public OutputWordDTO FindWords(InputLetterDTO dto)
         {
             var result = new OutputWordDTO();
 
             var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split("\r\n").ToList();
+            var source = File.ReadAllText(path).Split("\n").ToList();
             var finalSource = new List<string>();
             var letters = dto.Letters.Split("-").ToList();
             foreach (var word in source)
@@ -21,28 +20,28 @@
                     }
                 }
             }
-            finalSource = finalSource.Where(x => x.Length == letterCount).Distinct().ToList();
-            if (nameof(Find3LetterWords).Contains(letterCount.ToString()))
+            finalSource = finalSource.Where(x => x.Length == dto.LetterCount).Distinct().ToList();
+            if (nameof(Find3LetterWords).Contains(dto.LetterCount.ToString()))
             {
                 result.Words = Find3LetterWords(letters, finalSource);
             }
-            if (nameof(Find4LetterWords).Contains(letterCount.ToString()))
+            if (nameof(Find4LetterWords).Contains(dto.LetterCount.ToString()))
             {
                 result.Words = Find4LetterWords(letters, finalSource);
             }
-            if (nameof(Find5LetterWords).Contains(letterCount.ToString()))
+            if (nameof(Find5LetterWords).Contains(dto.LetterCount.ToString()))
             {
                 result.Words = Find5LetterWords(letters, finalSource);
             }
-            if (nameof(Find6LetterWords).Contains(letterCount.ToString()))
+            if (nameof(Find6LetterWords).Contains(dto.LetterCount.ToString()))
             {
                 result.Words = Find6LetterWords(letters, finalSource);
             }
-            if (nameof(Find7LetterWords).Contains(letterCount.ToString()))
+            if (nameof(Find7LetterWords).Contains(dto.LetterCount.ToString()))
             {
                 result.Words = Find7LetterWords(letters, finalSource);
             }
-            if (nameof(Find8LetterWords).Contains(letterCount.ToString()))
+            if (nameof(Find8LetterWords).Contains(dto.LetterCount.ToString()))
             {
                 result.Words = Find8LetterWords(letters, finalSource);
             }

@@ -14,7 +14,7 @@ namespace WordFinder.Web.Controllers
         [HttpPost]
         public IActionResult FindWords([FromBody] InputLetterDTO dto)
         {
-            return Ok(wordService.FindWords(dto, dto.LetterCount));
+            return Ok(wordService.FindWords(dto));
         }
 
     }
