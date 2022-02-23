@@ -7,7 +7,7 @@
 <h4>Version 2:</h4>
 <h5>Add Feature To Find English Words</h4>
 <hr/>
-<h5>Available at: <a href="https://imalisaeidi.ir/index.html">imalisaeidi.ir/index.html</a></h5>
+<h5>Available at: <a href="https://imalisaeidi.ir/index-fa.html">imalisaeidi.ir/index.html</a></h5>
 <hr/>
 <h4>Future Plans:</h4>
 <h5>Use elasticsearch To Speed Up Finding Words</h5>
