@@ -5,5 +5,7 @@
         public string Letters { get; set; }
         public int LetterCount { get; set; }
 
+        public bool IsEnglish { get; set; }
+
     }
 }

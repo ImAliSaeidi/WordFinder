@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html dir="ltr" lang="en" style="font-family:Vazir">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <title>Word Finder</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                English Word Finder
+            </a>
+            <a href="/Index-fa.html" class="navbar-brand">
+                نسخه فارسی
+            </a>
+        </div>
+    </nav>  
+    <div class="mb-5 ms-5 mt-5 me-5">
+        <div class="col-10">
+            <label class="form-label h4">Enter The Letters</label>
+            <input type="text" class="form-control" id="Letters">
+            <label class="form-label text-muted h5">Separate letters with <span class="text-danger">-</span></label>
+        </div>
+        <hr />
+        <div class="col-12">
+            <button type="submit" onclick="FindWords(3)" class="btn btn-primary mb-3">Find 3-Letter Words</button>
+            <button type="submit" onclick="FindWords(4)" class="btn btn-primary mb-3">Find 4-Letter Words</button>
+            <button type="submit" onclick="FindWords(5)" class="btn btn-primary mb-3">Find 5-Letter Words</button>
+            <button type="submit" onclick="FindWords(6)" class="btn btn-primary mb-3">Find 6-Letter Words</button>
+            <button type="submit" onclick="FindWords(7)" class="btn btn-primary mb-3">Find 7-Letter Words</button>
+            <button type="submit" onclick="FindWords(8)" class="btn btn-primary mb-3">Find 8-Letter Words</button>
+        </div>
+        <hr />
+        <div class="col-xs-1">
+            <table class="table table-striped">
+                <thead>
+                    <tr id="WordTitle" class="text-center">
+                    </tr>
+                </thead>
+                <tbody id="Words">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+
+        function FindWords(letterCount) {
+            var letters = document.getElementById("Letters").value;
+            var data = JSON.stringify({
+                "letters": letters,
+                "letterCount": letterCount,
+                "isEnglish": true
+            });
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    FillData(letterCount, JSON.parse(this.response));
+                }
+            });
+
+            xhr.open("POST", "https://localhost:7057/api/Words/");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(data);
+        }
+
+        function FillData(title, data) {
+            if (data.words.length != 0) {
+                document.getElementById("WordTitle").innerHTML = `
+									<td>
+										<h4>${title}-Letter Words | ${data.words.length} Words</h4 >
+										<h6 class="text-muted">After deleting, to find the deleted words again, click on Find ${title}-letter words</h6 >
+									</td>`;
+                var words = ``;
+                for (var i = 0; i < data.words.length; i++) {
+                    words += `<tr id="${i}" class="text-center">
+                                <td>
+									<h5>${data.words[i]}</h5>
+									<button type="submit" onclick="DeleteWord(${i})" class="btn btn-sm btn-danger mb-3">Temporary removal</button>
+									</td>
+                                 </tr>`
+                }
+                document.getElementById("Words").innerHTML = words;
+            }
+            else {
+                document.getElementById("WordTitle").innerHTML = ` <td><h4>Your search returned no results</h4></td>`;
+                document.getElementById("Words").innerHTML = ``;
+            }
+        }
+
+        function DeleteWord(id) {
+            document.getElementById(id).innerHTML = ``;
+        }
+
+    </script>
+</body>
+</html>

@@ -16,6 +16,9 @@
             <a href="#" class="navbar-brand">
                 کلمه یاب فارسی
             </a>
+            <a href="/Index-en.html" class="navbar-brand">
+                English Version
+            </a>
         </div>
     </nav>
     <div class="mb-5 ms-5 mt-5 me-5">
@@ -55,7 +58,8 @@
             var letters = document.getElementById("Letters").value;
             var data = JSON.stringify({
                 "letters": letters,
-                "letterCount": letterCount
+                "letterCount": letterCount,
+                "isEnglish": false
             });
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;

@@ -5,9 +5,19 @@
         public OutputWordDTO FindWords(InputLetterDTO dto)
         {
             var result = new OutputWordDTO();
+            var path = "";
+            var source = new List<string>();
+            if (dto.IsEnglish == true)
+            {
+                path = Directory.GetCurrentDirectory() + "/english-words.txt";
+                source = File.ReadAllText(path).Replace("\n","").Split("\r").ToList();
+            }
+            else
+            {
+                path = Directory.GetCurrentDirectory() + "/persian-words.txt";
+                source = File.ReadAllText(path).Split("\n").ToList();
+            }
 
-            var path = Directory.GetCurrentDirectory() + "/words.txt";
-            var source = File.ReadAllText(path).Split("\n").ToList();
             var finalSource = new List<string>();
             var letters = dto.Letters.Split("-").ToList();
             foreach (var word in source)
