@@ -1,4 +1,6 @@
-﻿namespace WordFinder.Core.Services.Words
+﻿using System.Text.RegularExpressions;
+
+namespace WordFinder.Core.Services.Words
 {
     public class WordService : IWordService
     {
@@ -10,274 +12,44 @@
             if (dto.IsEnglish == true)
             {
                 path = Directory.GetCurrentDirectory() + "/english-words.txt";
-                source = File.ReadAllText(path).Replace("\n","").Split("\r").ToList();
+                source = File.ReadAllText(path)
+                    .Replace("\n", "")
+                    .Split("\r")
+                    .Where(s => s.Length >= 3 && s.Length <= 8)
+                    .ToList();
             }
             else
             {
                 path = Directory.GetCurrentDirectory() + "/persian-words.txt";
-                source = File.ReadAllText(path).Split("\n").ToList();
+                source = File.ReadAllText(path)
+                    .Split("\n")
+                    .Where(s => s.Length >= 3 && s.Length <= 8)
+                    .ToList();
             }
 
             var finalSource = new List<string>();
-            var letters = dto.Letters.Split("-").ToList();
-            foreach (var word in source)
-            {
-                foreach (var letter in letters)
-                {
-                    if (word.Contains(letter))
-                    {
-                        finalSource.Add(word);
-                    }
-                }
-            }
-            finalSource = finalSource.Where(x => x.Length == dto.LetterCount).Distinct().ToList();
-            if (nameof(Find3LetterWords).Contains(dto.LetterCount.ToString()))
-            {
-                result.Words = Find3LetterWords(letters, finalSource);
-            }
-            if (nameof(Find4LetterWords).Contains(dto.LetterCount.ToString()))
-            {
-                result.Words = Find4LetterWords(letters, finalSource);
-            }
-            if (nameof(Find5LetterWords).Contains(dto.LetterCount.ToString()))
-            {
-                result.Words = Find5LetterWords(letters, finalSource);
-            }
-            if (nameof(Find6LetterWords).Contains(dto.LetterCount.ToString()))
-            {
-                result.Words = Find6LetterWords(letters, finalSource);
-            }
-            if (nameof(Find7LetterWords).Contains(dto.LetterCount.ToString()))
-            {
-                result.Words = Find7LetterWords(letters, finalSource);
-            }
-            if (nameof(Find8LetterWords).Contains(dto.LetterCount.ToString()))
-            {
-                result.Words = Find8LetterWords(letters, finalSource);
-            }
-            return result;
-        }
+            var letters = dto.Letters.Replace("-", "");
 
-        private static List<string>? Find3LetterWords(List<string> letters, List<string> source)
-        {
-            var result = new List<string>();
-            try
+
+            var sample = string.Format("[{0}]", letters);
+            var repeat = Enumerable.Repeat(sample, dto.LetterCount).ToList();
+            var repeatToString = "";
+            foreach (var item in repeat)
             {
-                var words = new List<string>();
-
-                for (int i = 0; i < letters.Count; i++)
-                {
-                    for (int j = 0; j < letters.Count; j++)
-                    {
-                        for (int k = 0; k < letters.Count; k++)
-                        {
-                            words.Add(letters[i] + letters[j] + letters[k]);
-                        }
-                    }
-                }
-                words = words.Distinct().ToList();
-
-                result = source.Where(x => words.Contains(x)).Distinct().ToList();
+                repeatToString += item;
             }
-            catch
-            {
+            var regex = "^" + repeatToString + "$";
 
-                result = null;
+            finalSource = source.Where(s => s.Length == dto.LetterCount && Regex.IsMatch(s, regex)).Distinct().ToList();
+
+
+            foreach (var item in finalSource)
+            {
+                result.Words.Add(item);
             }
 
             return result;
         }
-
-        private static List<string>? Find4LetterWords(List<string> letters, List<string> source)
-        {
-            var result = new List<string>();
-            try
-            {
-                var words = new List<string>();
-
-                for (int i = 0; i < letters.Count; i++)
-                {
-                    for (int j = 0; j < letters.Count; j++)
-                    {
-                        for (int k = 0; k < letters.Count; k++)
-                        {
-                            for (int l = 0; l < letters.Count; l++)
-                            {
-                                words.Add(letters[i] + letters[j] + letters[k] + letters[l]);
-                            }
-                        }
-                    }
-                }
-                words = words.Distinct().ToList();
-
-                result = source.Where(x => words.Contains(x)).Distinct().ToList();
-
-            }
-            catch
-            {
-                result = null;
-            }
-            return result;
-        }
-
-        private static List<string>? Find5LetterWords(List<string> letters, List<string> source)
-        {
-            var result = new List<string>();
-            try
-            {
-                var words = new List<string>();
-
-                for (int i = 0; i < letters.Count; i++)
-                {
-                    for (int j = 0; j < letters.Count; j++)
-                    {
-                        for (int k = 0; k < letters.Count; k++)
-                        {
-                            for (int l = 0; l < letters.Count; l++)
-                            {
-                                for (int m = 0; m < letters.Count; m++)
-                                {
-                                    words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m]);
-                                }
-                            }
-                        }
-                    }
-                }
-                words = words.Distinct().ToList();
-
-                result = source.Where(x => words.Contains(x)).Distinct().ToList();
-            }
-            catch
-            {
-                result = null;
-            }
-
-            return result;
-        }
-
-        private static List<string>? Find6LetterWords(List<string> letters, List<string> source)
-        {
-            var result = new List<string>();
-            try
-            {
-                var words = new List<string>();
-
-                for (int i = 0; i < letters.Count; i++)
-                {
-                    for (int j = 0; j < letters.Count; j++)
-                    {
-                        for (int k = 0; k < letters.Count; k++)
-                        {
-                            for (int l = 0; l < letters.Count; l++)
-                            {
-                                for (int m = 0; m < letters.Count; m++)
-                                {
-                                    for (int n = 0; n < letters.Count; n++)
-                                    {
-                                        words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m] + letters[n]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                words = words.Distinct().ToList();
-
-                result = source.Where(x => words.Contains(x)).Distinct().ToList();
-
-            }
-            catch
-            {
-                result = null;
-            }
-            return result;
-        }
-
-        private static List<string>? Find7LetterWords(List<string> letters, List<string> source)
-        {
-            var result = new List<string>();
-            try
-            {
-                var words = new List<string>();
-
-                for (int i = 0; i < letters.Count; i++)
-                {
-                    for (int j = 0; j < letters.Count; j++)
-                    {
-                        for (int k = 0; k < letters.Count; k++)
-                        {
-                            for (int l = 0; l < letters.Count; l++)
-                            {
-                                for (int m = 0; m < letters.Count; m++)
-                                {
-                                    for (int n = 0; n < letters.Count; n++)
-                                    {
-                                        for (int o = 0; o < letters.Count; o++)
-                                        {
-                                            words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m] + letters[n] + letters[o]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                words = words.Distinct().ToList();
-
-                result = source.Where(x => words.Contains(x)).Distinct().ToList();
-
-            }
-            catch
-            {
-                result = null;
-            }
-            return result;
-        }
-
-        private static List<string>? Find8LetterWords(List<string> letters, List<string> source)
-        {
-            var result = new List<string>();
-            try
-            {
-                var words = new List<string>();
-
-                for (int i = 0; i < letters.Count; i++)
-                {
-                    for (int j = 0; j < letters.Count; j++)
-                    {
-                        for (int k = 0; k < letters.Count; k++)
-                        {
-                            for (int l = 0; l < letters.Count; l++)
-                            {
-                                for (int m = 0; m < letters.Count; m++)
-                                {
-                                    for (int n = 0; n < letters.Count; n++)
-                                    {
-                                        for (int o = 0; o < letters.Count; o++)
-                                        {
-                                            for (int p = 0; p < letters.Count; p++)
-                                            {
-                                                words.Add(letters[i] + letters[j] + letters[k] + letters[l] + letters[m] + letters[n] + letters[o] + letters[p]);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                words = words.Distinct().ToList();
-
-                result = source.Where(x => words.Contains(x)).Distinct().ToList();
-            }
-            catch
-            {
-                result = null;
-            }
-
-            return result;
-        }
-
 
     }
 }
